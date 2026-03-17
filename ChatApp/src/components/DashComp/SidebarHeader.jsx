@@ -2,11 +2,11 @@ import React from "react";
 
 function SidebarHeader() {
     return (
-        <div class="sidebar-header">
-            <div class="user-avatar" title="Your profile">KST</div>
-            <div class="header-icons">
+        <div className="sidebar-header">
+            <div className="user-avatar" title="Your profile">KST</div>
+            <div className="header-icons">
                 {/* <!-- New Chat --> */}
-                <button class="icon-btn" title="New chat" onclick="showChat()">
+                <button className="icon-btn" title="New chat">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -15,7 +15,7 @@ function SidebarHeader() {
                     </svg>
                 </button>
                 {/* <!-- Menu --> */}
-                <button class="icon-btn" title="Menu">
+                <button className="icon-btn" title="Menu">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                         <circle cx="12" cy="5" r="1.5" />
                         <circle cx="12" cy="12" r="1.5" />
