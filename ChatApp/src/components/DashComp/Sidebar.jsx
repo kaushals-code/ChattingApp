@@ -3,8 +3,9 @@ import SidebarHeader from "./SidebarHeader";
 import SidebarSearch from "./SidebarSearch";
 import SidebarChat from "./SidebarChat";
 import { giveStatus } from "../../Auth";
+import { RemPrmScrn } from "./RemPrmScrn";
 
-function Sidebar() {
+function Sidebar(props) {
 
     const stat = giveStatus();
     let chats;
@@ -16,7 +17,11 @@ function Sidebar() {
 
     function handleOpenChat(id) {
         const chat = chats.find((chat) => chat.id === id);
+        // Active Current Chat
         setCurChat(chat);
+
+        props.onClick(id);
+
         console.log(chat);
     }
 
@@ -33,6 +38,7 @@ function Sidebar() {
             <div className="chat-list" id="chatList">
                 {chats.map((chat) => {
                     return <SidebarChat
+                        key={chat.id}
                         name={chat.name}
                         preview={chat.preview}
                         time={chat.time}
