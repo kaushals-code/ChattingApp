@@ -16,6 +16,12 @@ function Dashboard() {
     // const [showChat, setShowChat] = useState(false);
     const [chatId, setChatId] = useState(null);
 
+    const [refresh, setRefresh] = useState(0);
+
+    function handleRefresh() {
+        setRefresh(prev => prev + 1);
+    }
+
     return (
         <>
             <div className="app">
@@ -26,7 +32,7 @@ function Dashboard() {
 
                 {/* <EmptyState /> */}
 
-                {chatId !== null ? <Chat key={chatId} id={chatId} /> : <EmptyState />}
+                {chatId !== null ? <Chat key={chatId} id={chatId} ref={handleRefresh} /> : <EmptyState />}
 
             </div>
         </>

@@ -15,8 +15,6 @@ function Chat(props) {
 
     const [lastDate, setLastDate] = useState(null);
 
-    const [refresh, setRefresh] = useState(0);
-
     function getDate() {
         const d = new Date();
 
@@ -45,11 +43,16 @@ function Chat(props) {
             date: getDate()
         }
 
+        // For rerendering of the whole page
+        props.ref();
+
+        // Changes to the chat
+        chat.preview = `You: ${message}`;
+        chat.time = time;
+
         chat.messages.push(whatToSend);
         console.log(whatToSend);
 
-        // For re-rendering the chat messages
-        setRefresh(prev => prev + 1);
     }
 
     return (
