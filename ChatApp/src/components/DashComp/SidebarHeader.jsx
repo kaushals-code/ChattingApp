@@ -1,9 +1,10 @@
 import React from "react";
+import avatarColors from "../../AvatarColors";
 
 function SidebarHeader() {
     return (
         <div className="sidebar-header">
-            <div className="user-avatar" title="Your profile">KST</div>
+            <div className="user-avatar" title="Your profile" style={{ background: avatarColors[Math.floor(Math.random() * avatarColors.length)] }}>KST</div>
             <div className="header-icons">
                 {/* <!-- New Chat --> */}
                 <button className="icon-btn" title="New chat">
