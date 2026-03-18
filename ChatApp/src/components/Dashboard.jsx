@@ -20,10 +20,6 @@ function Dashboard() {
     //     setShowChat(b);
     // }
 
-    function handleChatId(id) {
-        setChatId(id);
-    }
-
     return (
         <>
             <div className="app">

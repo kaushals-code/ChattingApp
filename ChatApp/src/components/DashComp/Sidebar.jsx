@@ -3,7 +3,6 @@ import SidebarHeader from "./SidebarHeader";
 import SidebarSearch from "./SidebarSearch";
 import SidebarChat from "./SidebarChat";
 import { giveStatus } from "../../Auth";
-import { RemPrmScrn } from "./RemPrmScrn";
 
 function Sidebar(props) {
 
