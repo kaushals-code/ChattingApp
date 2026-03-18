@@ -9,7 +9,7 @@ function ChatInput(props) {
             console.log(message);
 
             //Code to send message and re-render the messages comes here 
-
+            props.updateMes(message);
 
         }
         setMessage("");

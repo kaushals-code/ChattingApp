@@ -15,6 +15,43 @@ function Chat(props) {
 
     const [lastDate, setLastDate] = useState(null);
 
+    const [refresh, setRefresh] = useState(0);
+
+    function getDate() {
+        const d = new Date();
+
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+
+        return `${day}.${month}.${year}`;
+    }
+
+    function updateChat(message) {
+
+        const time = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        });
+
+        const newId = chat.messages.length + 1;
+
+        const whatToSend = {
+            id: newId,
+            type: 'out',
+            text: message,
+            time: time,
+            date: getDate()
+        }
+
+        chat.messages.push(whatToSend);
+        console.log(whatToSend);
+
+        // For re-rendering the chat messages
+        setRefresh(prev => prev + 1);
+    }
+
     return (
         <>
             {/* // Chat Header */}
@@ -41,7 +78,7 @@ function Chat(props) {
 
                 {/* Input bar and Send btn */}
                 < div className="input-bar" >
-                    <ChatInput />
+                    <ChatInput updateMes={(mes) => updateChat(mes)} />
                 </div >
 
             </div >
