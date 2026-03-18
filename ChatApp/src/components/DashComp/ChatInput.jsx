@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 
-function ChatInput() {
+function ChatInput(props) {
+
+    const [message, setMessage] = useState("");
+
+    function handleSendMessage() {
+        if (message !== "") {
+            console.log(message);
+
+            //Code to send message and re-render the messages comes here 
+
+
+        }
+        setMessage("");
+    }
+
+    function handleKey(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    }
+
     return (
         <>
             <div className="msg-input-wrap">
-                <textarea className="msg-input" id="msgInput" placeholder="Type a message" rows="1"
-                    onKeyDown="handleKey(event)" onInput="autoResize(this)"></textarea>
+                <textarea
+                    className="msg-input"
+                    id="msgInput"
+                    placeholder="Type a message"
+                    rows="1"
+                    onKeyDown={handleKey}
+                    value={message}
+                    onChange={(e) => {
+                        setMessage(e.target.value)
+                    }}></textarea>
             </div>
-            <button className="send-btn" id="sendBtn" onClick="sendMessage()" title="Send">
+            <button
+                className="send-btn"
+                id="sendBtn"
+                title="Send"
+                onClick={handleSendMessage}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                     strokeLinejoin="round">
                     <line x1="22" y1="2" x2="11" y2="13" />

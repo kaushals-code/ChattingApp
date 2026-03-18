@@ -20,9 +20,9 @@ export function auth(username, password) {
                         { id: 2, type: 'out', text: 'Sab badhiya yaar! Tu bata.', time: '12:31 PM', date: "15.03.2026" },
                         { id: 3, type: 'in', text: 'Kal presentation kaisi gayi?', time: '12:33 PM', date: "15.03.2026" },
                         { id: 4, type: 'out', text: 'Ekdum mast gayi! Client bohot khush tha 😄', time: '12:34 PM', date: "15.03.2026" },
-                        { id: 5, type: 'in', text: 'Nice nice! Toh ab party kab de raha hai? 🎉', time: '12:35 PM' },
-                        { id: 6, type: 'out', text: 'Haha definitely this weekend!', time: '12:36 PM', date: "15.03.2026" },
-                        { id: 7, type: 'in', text: 'Bhai, aaj meeting hai kya?', time: '12:45 PM', date: "15.03.2026" },
+                        { id: 5, type: 'in', text: 'Nice nice! Toh ab party kab de raha hai? 🎉', time: '12:35 PM', date: "16.03.2026" },
+                        { id: 6, type: 'out', text: 'Haha definitely this weekend!', time: '12:36 PM', date: "16.03.2026" },
+                        { id: 7, type: 'in', text: 'Bhai, aaj meeting hai kya?', time: '12:45 PM', date: "16.03.2026" },
                     ]
                 },
                 {
