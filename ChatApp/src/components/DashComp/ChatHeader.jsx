@@ -4,7 +4,7 @@ function ChatHeader(props) {
     return (
         <>
             <div className="chat-header">
-                <div className="avatar" id="chatAvatar" style={{ fontSize: "16px", width: "40px", height: "40px" }}>{props.name.replace(/[^\w\s]/gi, '').trim().split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>
+                <div className="avatar" id="chatAvatar" style={{ fontSize: "16px", width: "40px", height: "40px", background: props.color }}>{props.name.replace(/[^\w\s]/gi, '').trim().split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>
                 <div className="chat-header-info">
                     <div className="chat-header-name" id="chatName">{props.name}</div>
                     {/* <div className="chat-header-status" id="chatStatus">online</div> */}

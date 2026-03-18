@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { giveStatus } from "../../Auth";
 import SidebarHeader from "./SidebarHeader";
 import SidebarSearch from "./SidebarSearch";
 import SidebarChat from "./SidebarChat";
-import { giveStatus } from "../../Auth";
+import avatarColors from "../../AvatarColors";
 
 function Sidebar(props) {
 
@@ -21,7 +22,7 @@ function Sidebar(props) {
 
         props.onClick(id);
 
-        console.log(chat);
+        // console.log(chat);
     }
 
     return (
@@ -42,6 +43,11 @@ function Sidebar(props) {
                         preview={chat.preview}
                         time={chat.time}
                         onClick={() => handleOpenChat(chat.id)}
+                        color={
+                            chat.chatcolor !== "none"
+                                ? chat.chatcolor
+                                : (chat.chatcolor = avatarColors[Math.floor(Math.random() * avatarColors.length)])
+                        }
                         active={chat.id === curChat?.id} />
                 })}
                 {/* <SidebarChat name="Triansh Singh" preview="Kya haal hai bhai" time="2:32 PM" /> */}

@@ -2,21 +2,29 @@ import React from "react";
 import { giveStatus } from "../../Auth";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
+import ChatMessage from "./ChatMessage";
 
 function Chat(props) {
 
     const dat = giveStatus();
 
+    // We got the message area now just render each and every message to the message area
     const chat = dat.chats.find((sat) => sat.id === props.id);
 
     return (
         <>
             {/* // Chat Header */}
             <div className="chat-window">
-                <ChatHeader name={chat.name} />
+                <ChatHeader name={chat.name} color={chat.chatcolor} />
 
                 {/* // Messages Area */}
-                < div class="messages-area" id="messagesArea" ></div >
+                < div className="messages-area" id="messagesArea" >
+                    {
+                        chat.messages.map((message) => {
+                            return <ChatMessage text={message.text} type={message.type} />
+                        })
+                    }
+                </div >
 
                 {/* Input bar and Send btn */}
                 < div className="input-bar" >

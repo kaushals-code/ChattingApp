@@ -9,7 +9,8 @@ function SidebarChat(props) {
         <>
             {/* <div className="chat-item" onClick={props.onClick}> */}
             <div className={`chat-item ${props.active ? "active" : ""}`} onClick={props.onClick}>
-                <div className="avatar" style={{ background: avatarColors[Math.floor(Math.random() * avatarColors.length)] }}>
+                {/* <div className="avatar" style={{ background: avatarColors[Math.floor(Math.random() * avatarColors.length)] }}> */}
+                <div className="avatar" style={{ background: props.color }}>
                     {props.name.replace(/[^\w\s]/gi, '').trim().split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}
                 </div >
                 <div className="chat-info">

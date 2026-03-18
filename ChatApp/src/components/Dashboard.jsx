@@ -16,10 +16,6 @@ function Dashboard() {
     // const [showChat, setShowChat] = useState(false);
     const [chatId, setChatId] = useState(null);
 
-    // function handleShowChat(b) {
-    //     setShowChat(b);
-    // }
-
     return (
         <>
             <div className="app">
