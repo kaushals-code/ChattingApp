@@ -7,6 +7,9 @@ function ChatMessage(props) {
                 <div className="msg-text">
                     {props.text}
                 </div>
+                <div className="msg-time">
+                    {props.time}
+                </div>
             </div>
         </div>
     );

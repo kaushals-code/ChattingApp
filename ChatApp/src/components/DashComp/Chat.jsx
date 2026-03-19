@@ -1,91 +1,116 @@
-import React, { useState } from "react";
-import { giveStatus } from "../../Auth";
+import React, { useState, useEffect, useRef } from "react";
+import { ref, onValue, get } from "firebase/database";
+import { db } from "../../firebase";
+import { getDBUser } from "../../Auth";
+import { sendMessage } from "../../services/chatService";
 import ChatHeader from "./ChatHeader";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import ChatDate from "./ChatDate";
 
+function Chat({ id }) {
 
-function Chat(props) {
+    const [messages, setMessages] = useState([]);
+    const [chatInfo, setChatInfo] = useState({ name: "", color: "" });
+    const bottomRef = useRef(null);
+    const uid = getDBUser();
 
-    const dat = giveStatus();
+    // Load chat metadata and resolve UID to username
+    useEffect(() => {
+        async function loadChatInfo() {
+            const chatMetaSnap = await get(ref(db, `users/${uid}/userChats/${id}`));
 
-    // We got the message area now just render each and every message to the message area
-    const chat = dat.chats.find((sat) => sat.id === props.id);
+            if (chatMetaSnap.exists()) {
+                const data = chatMetaSnap.val();
 
-    const [lastDate, setLastDate] = useState(null);
+                // Resolve the UID stored in "with" to an actual username
+                const userSnap = await get(ref(db, `users/${data.with}/username`));
+                const username = userSnap.exists() ? userSnap.val() : "Unknown";
 
-    function getDate() {
-        const d = new Date();
+                setChatInfo({
+                    name: username,
+                    color: data.chatcolor || "#ccc"
+                });
+            }
+        }
 
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
+        loadChatInfo();
+    }, [id]);
 
-        return `${day}.${month}.${year}`;
+    // Load messages in real time
+    useEffect(() => {
+        const msgsRef = ref(db, `chats/${id}/messages`);
+        const unsub = onValue(msgsRef, (snapshot) => {
+            if (!snapshot.exists()) {
+                setMessages([]);
+                return;
+            }
+            const data = snapshot.val();
+            const arr = Object.entries(data).map(([msgId, msg]) => ({
+                id: msgId,
+                ...msg
+            }));
+            arr.sort((a, b) => a.time - b.time);
+            setMessages(arr);
+        });
+        return () => unsub();
+    }, [id]);
+
+    // Auto scroll to bottom on new messages
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
+
+    async function handleSend(text) {
+        if (!text.trim()) return;
+        await sendMessage(id, text);
     }
 
-    function updateChat(message) {
-
-        const time = new Date().toLocaleTimeString([], {
+    function formatTime(timestamp) {
+        return new Date(timestamp).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true
         });
+    }
 
-        const newId = chat.messages.length + 1;
-
-        const whatToSend = {
-            id: newId,
-            type: 'out',
-            text: message,
-            time: time,
-            date: getDate()
-        }
-
-        // For rerendering of the whole page
-        props.ref();
-
-        // Changes to the chat
-        chat.preview = `You: ${message}`;
-        chat.time = time;
-
-        chat.messages.push(whatToSend);
-        console.log(whatToSend);
-
+    function formatDate(timestamp) {
+        const d = new Date(timestamp);
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const year = d.getFullYear();
+        return `${day}.${month}.${year}`;
     }
 
     return (
-        <>
-            {/* // Chat Header */}
-            <div className="chat-window">
-                <ChatHeader name={chat.name} color={chat.chatcolor} />
+        <div className="chat-window">
 
-                {/* // Messages Area */}
-                < div className="messages-area" id="messagesArea" >
-                    {
-                        chat.messages.map((message, index) => {
+            <ChatHeader name={chatInfo.name} color={chatInfo.color} />
 
-                            const prevMessage = chat.messages[index - 1];
-                            const showDate = !prevMessage || prevMessage.date !== message.date;
+            <div className="messages-area" id="messagesArea">
+                {messages.map((msg, index) => {
+                    const prev = messages[index - 1];
+                    const showDate = !prev || formatDate(prev.time) !== formatDate(msg.time);
 
-                            return (
-                                <React.Fragment key={message.id}>
-                                    {showDate && <ChatDate date={message.date} />}
-                                    <ChatMessage text={message.text} type={message.type} />
-                                </React.Fragment>
-                            );
-                        })
-                    }
-                </div >
+                    return (
+                        <React.Fragment key={msg.id}>
+                            {showDate && <ChatDate date={formatDate(msg.time)} />}
+                            <ChatMessage
+                                text={msg.text}
+                                type={msg.sender === uid ? "out" : "in"}
+                                time={formatTime(msg.time)}
+                            />
+                        </React.Fragment>
+                    );
+                })}
+                <div ref={bottomRef} />
+            </div>
 
-                {/* Input bar and Send btn */}
-                < div className="input-bar" >
-                    <ChatInput updateMes={(mes) => updateChat(mes)} />
-                </div >
+            <div className="input-bar">
+                <ChatInput updateMes={handleSend} />
+            </div>
 
-            </div >
-        </>
+        </div>
     );
 }
 
